@@ -92,22 +92,36 @@ export class NoticiasService {
       );
   }
 
-  public salvar(titulo: string, resumo: string, conteudo: string, autor: any, data: string, publicada: boolean, destaque: boolean) {
+  public salvar(titulo: string, resumo: string, conteudo: string, autor: any, data: string, publicada: boolean, destaque: boolean, categoria: any) {
     const options = this.getHeaders();
     const noticia = {
       titulo: titulo,
       resumo: resumo,
       conteudo: conteudo,
-      autor: {
-        id: autor
-      },
+      autor_id: autor,
       data: data,
       publicada: publicada,
       destaque: destaque,
-      categorias: [],
-      tags: []
+      categoria_id: categoria,
+      tags_ids: []
     };
     return this.http.post(this.API_URL, noticia, options);
+  }
+  
+  public editar(id: number, titulo: string, resumo: string, conteudo: string, autor: number, data: string, publicada: boolean, destaque: boolean, categoria: any) {
+    const options = this.getHeaders();
+    const noticia = {
+      titulo: titulo,
+      resumo: resumo,
+      conteudo: conteudo,
+      autor: autor,
+      data: data,
+      publicada: publicada,
+      destaque: destaque,
+      categoria_id: categoria,
+      tags_ids: []
+    };
+    return this.http.put(this.API_URL + id + '/', noticia, options);
   }
 
   public salvarFoto(id: any, foto: any) {

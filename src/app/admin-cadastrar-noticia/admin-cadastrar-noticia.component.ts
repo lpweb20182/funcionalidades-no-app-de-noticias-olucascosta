@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NoticiasService } from '../noticias.service';
 import { AutoresService } from '../autores.service';
 import { Noticia } from '../noticia.model';
+import { CategoriasService } from 'src/app/categorias.service';
 
 @Component({
   selector: 'app-admin-cadastrar-noticia',
@@ -11,7 +12,9 @@ import { Noticia } from '../noticia.model';
 export class AdminCadastrarNoticiaComponent implements OnInit {
   titulo = null;
   autores = null;
+  categorias = null;
   autor = null;
+  categoria = null;
   resumo = null;
   conteudo = null;
   data = null;
@@ -22,15 +25,17 @@ export class AdminCadastrarNoticiaComponent implements OnInit {
   slug = null;
   arquivo = null;
 
-  constructor(private noticias_service: NoticiasService, private autores_service: AutoresService) { }
+  constructor(private noticias_service: NoticiasService, private autores_service: AutoresService,
+    private categorias_service: CategoriasService) { }
 
   ngOnInit() {
     this.autores = this.autores_service.todos();
+    this.categorias = this.categorias_service.todos();
   }
 
   salvar() {
     this.noticias_service.salvar(this.titulo, this.resumo, this.conteudo, this.autor,
-      this.data, this.publicada, this.destaque).subscribe(
+      this.data, this.publicada, this.destaque, this.categoria).subscribe(
         (noticia: Noticia) => {
           this.noticias_service.salvarFoto(noticia.id, this.arquivo)
             .subscribe(n => {
